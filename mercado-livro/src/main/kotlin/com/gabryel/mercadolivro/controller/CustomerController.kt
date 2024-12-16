@@ -3,6 +3,7 @@ package com.gabryel.mercadolivro.controller
 import com.gabryel.mercadolivro.dto.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.CustomerSaveDTO
 import com.gabryel.mercadolivro.dto.CustomerUpdateDTO
+import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.service.CustomerService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -28,7 +29,6 @@ class CustomerController(
     @ResponseStatus(HttpStatus.OK)
     fun getAllCustomers(@RequestParam name: String?): List<CustomerDetailDTO> {
         return customerService.getAll(name)
-
     }
 
     @GetMapping("/{id}")
@@ -40,7 +40,7 @@ class CustomerController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun saveCustomer(@Valid @RequestBody customer: CustomerSaveDTO) {
-        customerService.save(customer)
+        customerService.save(customer.toCustomerModel())
         println("salvou")
     }
 
@@ -53,7 +53,7 @@ class CustomerController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateCustomer(@PathVariable id: String, @Valid @RequestBody update: CustomerUpdateDTO) {
-        customerService.update(id, update)
+        customerService.update(id, update.toCustomerModel())
     }
 
     @DeleteMapping("/{id}")

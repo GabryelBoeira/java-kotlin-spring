@@ -1,8 +1,8 @@
 package com.gabryel.mercadolivro.service
 
 import com.gabryel.mercadolivro.dto.CustomerDetailDTO
-import com.gabryel.mercadolivro.dto.CustomerSaveDTO
-import com.gabryel.mercadolivro.dto.CustomerUpdateDTO
+import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
+import com.gabryel.mercadolivro.model.CustomerModel
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,8 +16,8 @@ class CustomerService {
      */
     fun getAll(name: String?): List<CustomerDetailDTO> {
         return listOf(
-            CustomerDetailDTO("123", "teste 1", "teste1@gmail.com"),
-            CustomerDetailDTO("456", "teste 2", "teste2@gmail.com")
+            CustomerModel("123", "teste 1", "teste1@gmail.com").toCustomerDetailDTO(),
+            CustomerModel("456", "teste 2", "teste2@gmail.com").toCustomerDetailDTO()
         )
     }
 
@@ -28,15 +28,15 @@ class CustomerService {
      * @return a [CustomerDetailDTO].
      */
     fun getById(id: String?): CustomerDetailDTO {
-        return CustomerDetailDTO("123", "teste 1", "teste1@gmail.com")
+        return CustomerModel("123", "teste 1", "teste1@gmail.com").toCustomerDetailDTO()
     }
 
     /**
      * Saves a new customer.
      *
-     * @param customer the customer to save.
+     * @param customer the customer[CustomerModel] to save.
      */
-    fun save(customer: CustomerSaveDTO) {
+    fun save(customer: CustomerModel) {
         TODO("Not yet implemented")
     }
 
@@ -55,7 +55,7 @@ class CustomerService {
      * @param id the customer's ID.
      * @param update the customer's updated data.
      */
-    fun update(id: String, update: CustomerUpdateDTO) {
+    fun update(id: String, update: CustomerModel) {
         TODO("Not yet implemented")
     }
 
