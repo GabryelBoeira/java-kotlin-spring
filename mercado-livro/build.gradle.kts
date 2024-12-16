@@ -21,8 +21,13 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.projectlombok:lombok")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	"developmentOnly"("org.springframework.boot:spring-boot-devtools")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
