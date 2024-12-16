@@ -1,4 +1,4 @@
-package fundamentos
+package com.gabryel.fundamentos
 
 class Variaveis {
     fun inicializa(): Int {

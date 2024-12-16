@@ -1,4 +1,4 @@
-package fundamentos
+package com.gabryel.fundamentos
 
 fun retornaNumeroPorExtenso(numero: Int): String? {
     return when (numero) {

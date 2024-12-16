@@ -1,4 +1,4 @@
-package fundamentos
+package com.gabryel.fundamentos
 
 fun main() {
     parOuImpar(10)

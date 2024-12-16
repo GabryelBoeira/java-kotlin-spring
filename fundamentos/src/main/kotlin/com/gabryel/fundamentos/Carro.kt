@@ -1,4 +1,4 @@
-package fundamentos
+package com.gabryel.fundamentos
 
 class Carro(var cor: String, val marca: String, var modelo: String, var dono: Dono) {
 }

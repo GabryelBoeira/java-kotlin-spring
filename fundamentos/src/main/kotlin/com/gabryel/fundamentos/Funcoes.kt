@@ -1,4 +1,4 @@
-package fundamentos;
+package com.gabryel.fundamentos;
 
 //Funcao que retorna void
 fun main() {
