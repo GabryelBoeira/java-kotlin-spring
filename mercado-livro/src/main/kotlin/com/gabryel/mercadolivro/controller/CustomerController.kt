@@ -33,7 +33,7 @@ class CustomerController(
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun getCustomer(@PathVariable id: String): CustomerDetailDTO {
+    fun getCustomer(@PathVariable id: Long): CustomerDetailDTO {
         return customerService.getById(id)
     }
 
@@ -41,24 +41,23 @@ class CustomerController(
     @ResponseStatus(HttpStatus.CREATED)
     fun saveCustomer(@Valid @RequestBody customer: CustomerSaveDTO) {
         customerService.save(customer.toCustomerModel())
-        println("salvou")
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateStatus(@PathVariable id: String) {
+    fun updateStatus(@PathVariable id: Long) {
         customerService.pacth(id)
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateCustomer(@PathVariable id: String, @Valid @RequestBody update: CustomerUpdateDTO) {
+    fun updateCustomer(@PathVariable id: Long, @Valid @RequestBody update: CustomerUpdateDTO) {
         customerService.update(id, update.toCustomerModel())
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteCustomer(@PathVariable id: String) {
+    fun deleteCustomer(@PathVariable id: Long) {
         customerService.delete(id)
     }
 
