@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.projectlombok:lombok")
+	implementation("org.flywaydb:flyway-mysql:11.1.0")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
 
