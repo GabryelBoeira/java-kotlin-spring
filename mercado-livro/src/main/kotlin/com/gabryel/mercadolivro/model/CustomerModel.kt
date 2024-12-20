@@ -1,9 +1,7 @@
 package com.gabryel.mercadolivro.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.gabryel.mercadolivro.enums.CustomerStatus
+import jakarta.persistence.*
 
 @Entity(name = "customer")
 data class CustomerModel(
@@ -12,5 +10,9 @@ data class CustomerModel(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var name: String,
-    var email: String
+    var email: String,
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: CustomerStatus
 )

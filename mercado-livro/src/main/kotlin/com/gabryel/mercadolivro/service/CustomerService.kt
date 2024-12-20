@@ -1,7 +1,10 @@
 package com.gabryel.mercadolivro.service
 
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
+import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
+import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
+import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import org.springframework.stereotype.Service
@@ -9,7 +12,6 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerService(
     val customerRepository: CustomerRepository,
-    val bookService: BookService
 ) {
 
     /**
@@ -53,12 +55,12 @@ class CustomerService(
      * @param id the customer's ID.
      * @param update the customer's updated data.
      */
-    fun update(id: Long, update: CustomerModel) {
-        if (!customerRepository.existsById(id))
+    fun update(id: Long, update: CustomerUpdateDTO) {
+        val customer = customerRepository.findById(id)
+        if (!customer.isPresent)
             throw Exception("Customer not found")
 
-        update.id = id
-        customerRepository.save(update)
+        customerRepository.save(update.toCustomerModel(customer.get()))
     }
 
     /**
@@ -67,13 +69,13 @@ class CustomerService(
      * @param id the customer's ID.
      */
     fun delete(id: Long) {
-        bookService.deleteByCustomerId(id)
-
-        if (!customerRepository.existsById(id))
+        val customer = customerRepository.findById(id)
+        if (!customer.isPresent)
             throw Exception("Customer not found")
 
-        customerRepository.deleteById(id)
+        val delete = customer.get()
+        delete.status = CustomerStatus.INACTIVE
+        customerRepository.save(delete)
     }
-
 
 }
