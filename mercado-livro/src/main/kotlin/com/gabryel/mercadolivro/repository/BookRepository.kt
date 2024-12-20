@@ -26,4 +26,15 @@ interface BookRepository : CrudRepository<BookModel, Long> {
      */
     fun findAllByStatus(active: BookStatus): List<BookModel>
 
+
+<<<<<<<<<<<<<<  ✨ Codeium Command ⭐ >>>>>>>>>>>>>>>>
+    /**
+     * Finds all books belonging to a customer.
+     *
+     * @param id the customer's ID.
+     * @return a list of [BookModel]s belonging to the customer.
+     */
+<<<<<<<  e775f3b8-5ce1-445a-b750-06e26263a250  >>>>>>>
+    fun findAllByCustomerId(id: Long) : List<BookModel>
+
 }

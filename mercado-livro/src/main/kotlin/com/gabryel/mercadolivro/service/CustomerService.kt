@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
-    val customerRepository: CustomerRepository
+    val customerRepository: CustomerRepository,
+    val bookService: BookService
 ) {
 
     /**
@@ -66,10 +67,13 @@ class CustomerService(
      * @param id the customer's ID.
      */
     fun delete(id: Long) {
+        bookService.deleteByCustomerId(id)
+
         if (!customerRepository.existsById(id))
             throw Exception("Customer not found")
 
         customerRepository.deleteById(id)
     }
+
 
 }

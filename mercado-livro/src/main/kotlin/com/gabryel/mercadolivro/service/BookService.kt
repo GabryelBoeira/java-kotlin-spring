@@ -90,7 +90,18 @@ class BookService(
     }
 
 
-
+    /**
+     * Deletes all books belonging to a customer by their ID.
+     *
+     * @param id the customer's ID.
+     */
+    fun deleteByCustomerId(id: Long) {
+        var books = bookRepository.findAllByCustomerId(id)
+        for (book in books) {
+            book.status = BookStatus.DELETED
+        }
+        bookRepository.saveAll(books)
+    }
 
 
 }
