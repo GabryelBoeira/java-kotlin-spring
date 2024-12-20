@@ -1,4 +1,4 @@
-package com.gabryel.mercadolivro.dto
+package com.gabryel.mercadolivro.dto.customer
 
 data class CustomerDetailDTO(
     var id: Long?,

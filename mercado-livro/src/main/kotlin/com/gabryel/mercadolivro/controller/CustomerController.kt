@@ -1,8 +1,8 @@
 package com.gabryel.mercadolivro.controller
 
-import com.gabryel.mercadolivro.dto.CustomerDetailDTO
-import com.gabryel.mercadolivro.dto.CustomerSaveDTO
-import com.gabryel.mercadolivro.dto.CustomerUpdateDTO
+import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
+import com.gabryel.mercadolivro.dto.customer.CustomerSaveDTO
+import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.service.CustomerService
 import jakarta.validation.Valid

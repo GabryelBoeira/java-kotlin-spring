@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.service
 
-import com.gabryel.mercadolivro.dto.CustomerDetailDTO
+import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.repository.CustomerRepository
