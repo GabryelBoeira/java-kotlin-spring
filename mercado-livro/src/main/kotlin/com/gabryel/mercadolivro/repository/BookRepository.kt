@@ -2,7 +2,8 @@ package com.gabryel.mercadolivro.repository
 
 import com.gabryel.mercadolivro.enums.BookStatus
 import com.gabryel.mercadolivro.model.BookModel
-import com.gabryel.mercadolivro.model.CustomerModel
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
@@ -15,16 +16,16 @@ interface BookRepository : CrudRepository<BookModel, Long> {
      * @param name the name of the books to find.
      * @return a list of [BookModel]s with the specified name.
      */
-    fun findAllByNameContainsIgnoreCase(name: String): List<BookModel>
-
+    fun findAllByNameContainsIgnoreCase(pageable: Pageable, name: String): Page<BookModel>
 
     /**
      * Finds all books with the given status.
      *
-     * @param active the book status to find.
+     * @param pageable the pagination information.
+     * @param active the status of the books to find.
      * @return a list of [BookModel]s with the specified status.
      */
-    fun findAllByStatus(active: BookStatus): List<BookModel>
+    fun findAllByStatus(pageable: Pageable, active: BookStatus): Page<BookModel>
 
 
     /**
@@ -34,5 +35,13 @@ interface BookRepository : CrudRepository<BookModel, Long> {
      * @return a list of [BookModel]s belonging to the customer.
      */
     fun findAllByCustomerId(id: Long) : List<BookModel>
+
+    /**
+     * Finds all books with pagination support.
+     *
+     * @param pageable the pagination information.
+     * @return a paginated list of all [BookModel]s.
+     */
+    fun findAll(pageable: Pageable): Page<BookModel>
 
 }

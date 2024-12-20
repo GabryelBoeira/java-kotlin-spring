@@ -5,6 +5,9 @@ import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.service.BookService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -16,14 +19,14 @@ class BookController (
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getAll(@RequestParam name: String?): List<BookDetailDTO> {
-        return bookService.getAll(name)
+    fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): Page<BookDetailDTO> {
+        return bookService.getAll(pageable, name)
     }
 
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
-    fun getByStatusActive(@RequestParam name: String?): List<BookDetailDTO> {
-        return bookService.getByStatusActive()
+    fun getByStatusActive(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookDetailDTO> {
+        return bookService.getByStatusActive(pageable)
     }
 
 

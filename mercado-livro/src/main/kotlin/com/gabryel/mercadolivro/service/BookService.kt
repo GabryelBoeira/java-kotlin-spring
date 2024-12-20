@@ -8,6 +8,8 @@ import com.gabryel.mercadolivro.extension.toBookDetailDTO
 import com.gabryel.mercadolivro.extension.toBookModel
 import com.gabryel.mercadolivro.model.BookModel
 import com.gabryel.mercadolivro.repository.BookRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,10 +24,10 @@ class BookService(
      * @param name the name to filter by, or null to get all books.
      * @return a list of [BookDetailDTO]s.
      */
-    fun getAll(name: String?): List<BookDetailDTO> {
+    fun getAll(pageable: Pageable, name: String?): Page<BookDetailDTO> {
         if (name == null)
-            return bookRepository.findAll().map { bk -> bk.toBookDetailDTO() }
-        return bookRepository.findAllByNameContainsIgnoreCase(name).map { bk -> bk.toBookDetailDTO() }
+            return bookRepository.findAll(pageable).map { bk -> bk.toBookDetailDTO() }
+        return bookRepository.findAllByNameContainsIgnoreCase(pageable, name).map { bk -> bk.toBookDetailDTO() }
     }
 
     /**
@@ -43,8 +45,8 @@ class BookService(
         return book.get().toBookDetailDTO()
     }
 
-    fun getByStatusActive(): List<BookDetailDTO> {
-        return bookRepository.findAllByStatus(BookStatus.ACTIVE).map { bk -> bk.toBookDetailDTO() }
+    fun getByStatusActive(pageable: Pageable): Page<BookDetailDTO> {
+        return bookRepository.findAllByStatus(pageable, BookStatus.ACTIVE).map { bk -> bk.toBookDetailDTO() }
     }
 
     /**
