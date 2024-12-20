@@ -6,8 +6,8 @@ import java.math.BigDecimal
 
 data class BookUpdateDTO(
     @field: NotBlank
-    val name: String,
+    val name: String?,
 
     @field: NotNull
-    val price: BigDecimal
+    val price: BigDecimal?
 )

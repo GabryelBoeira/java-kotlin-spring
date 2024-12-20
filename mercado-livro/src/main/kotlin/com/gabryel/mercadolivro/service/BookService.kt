@@ -1,16 +1,20 @@
 package com.gabryel.mercadolivro.service
 
 import com.gabryel.mercadolivro.dto.book.BookDetailDTO
+import com.gabryel.mercadolivro.dto.book.BookSaveDTO
+import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
+import com.gabryel.mercadolivro.enums.BookStatus
+import com.gabryel.mercadolivro.extension.toBookDetailDTO
+import com.gabryel.mercadolivro.extension.toBookModel
 import com.gabryel.mercadolivro.model.BookModel
 import com.gabryel.mercadolivro.repository.BookRepository
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
 
 @Service
 class BookService(
-    val bookRepository: BookRepository
+    val bookRepository: BookRepository,
+    val customerService: CustomerService
 ) {
-
 
     /**
      * Gets all books, optionally filtered by name.
@@ -19,9 +23,10 @@ class BookService(
      * @return a list of [BookDetailDTO]s.
      */
     fun getAll(name: String?): List<BookDetailDTO> {
-        return listOf()
+        if (name == null)
+            return bookRepository.findAll().map { bk -> bk.toBookDetailDTO() }
+        return bookRepository.findAllByNameContainsIgnoreCase(name).map { bk -> bk.toBookDetailDTO() }
     }
-
 
     /**
      * Gets a book by its ID.
@@ -35,7 +40,11 @@ class BookService(
         if (!book.isPresent)
             throw Exception("Book not found")
 
-        return BookDetailDTO(1, "Livro", BigDecimal(10.0))
+        return book.get().toBookDetailDTO()
+    }
+
+    fun getByStatusActive(): List<BookDetailDTO> {
+        return bookRepository.findAllByStatus(BookStatus.ACTIVE).map { bk -> bk.toBookDetailDTO() }
     }
 
     /**
@@ -43,7 +52,8 @@ class BookService(
      *
      * @param book the [BookModel] to save.
      */
-    fun save(book: BookModel) {
+    fun save(bookSave: BookSaveDTO) {
+        val book = bookSave.toBookModel(customerService.getById(bookSave.customerId))
         bookRepository.save(book)
     }
 
@@ -54,11 +64,12 @@ class BookService(
      * @param update the book's updated data.
      * @throws Exception if the book is not found.
      */
-    fun update(id: Long, update: BookModel) {
-        if (!bookRepository.existsById(id))
+    fun update(id: Long, update: BookUpdateDTO) {
+        val optBook = bookRepository.findById(id)
+        if (!optBook.isPresent)
             throw Exception("Book not found")
 
-
+        bookRepository.save(update.toBookModel(optBook.get()))
     }
 
     /**
@@ -68,10 +79,18 @@ class BookService(
      * @throws Exception if the book is not found.
      */
     fun delete(id: Long) {
-        if (!bookRepository.existsById(id))
+        val optBook = bookRepository.findById(id)
+        if (!optBook.isPresent)
             throw Exception("Book not found")
 
-        bookRepository.deleteById(id)
+        val book = optBook.get()
+        book.status = BookStatus.DELETED
+
+        bookRepository.save(book)
     }
+
+
+
+
 
 }

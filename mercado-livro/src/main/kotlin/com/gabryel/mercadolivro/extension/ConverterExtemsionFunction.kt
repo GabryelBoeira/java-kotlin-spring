@@ -1,6 +1,8 @@
 package com.gabryel.mercadolivro.extension
 
+import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
+import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerSaveDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
@@ -51,5 +53,23 @@ fun BookSaveDTO.toBookModel(customer: CustomerDetailDTO): BookModel {
         price = this.price,
         status = BookStatus.ACTIVE,
         customer = customer.toCustomerModel()
+    )
+}
+
+/**
+ * Converts this [BookModel] into a [BookDetailDTO].
+ *
+ * @return a new [BookDetailDTO] with the same ID, name, price and status as this [BookModel].
+ */
+fun BookModel.toBookDetailDTO() = BookDetailDTO(id, name, price, status, customer?.toCustomerDetailDTO())
+
+
+fun BookUpdateDTO.toBookModel(oldBook: BookModel): BookModel {
+    return BookModel(
+        id = oldBook.id,
+        name = this.name ?: oldBook.name,
+        price = this.price ?: oldBook.price,
+        status = oldBook.status,
+        customer = oldBook.customer
     )
 }
