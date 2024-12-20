@@ -47,15 +47,6 @@ class CustomerService(
     }
 
     /**
-     * Updates a customer's status by their ID.
-     *
-     * @param id the customer's ID.
-     */
-    fun pacth(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    /**
      * Updates a customer by their ID.
      *
      * @param id the customer's ID.

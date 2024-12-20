@@ -43,12 +43,6 @@ class CustomerController(
         customerService.save(customer.toCustomerModel())
     }
 
-    @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateStatus(@PathVariable id: Long) {
-        customerService.pacth(id)
-    }
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateCustomer(@PathVariable id: Long, @Valid @RequestBody update: CustomerUpdateDTO) {
