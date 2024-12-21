@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.service
 
-import com.gabryel.mercadolivro.dto.CreatePurchaseRequest
+import com.gabryel.mercadolivro.dto.purchase.CreatePurchaseRequest
 import com.gabryel.mercadolivro.events.PurchaseEventProducer
 import com.gabryel.mercadolivro.exception.BadRequestException
 import com.gabryel.mercadolivro.mapper.PurchaseMapper

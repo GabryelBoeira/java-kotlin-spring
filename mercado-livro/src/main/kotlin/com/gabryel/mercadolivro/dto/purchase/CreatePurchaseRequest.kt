@@ -1,4 +1,4 @@
-package com.gabryel.mercadolivro.dto
+package com.gabryel.mercadolivro.dto.purchase
 
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive

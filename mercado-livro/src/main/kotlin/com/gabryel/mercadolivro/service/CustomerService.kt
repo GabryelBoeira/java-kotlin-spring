@@ -31,15 +31,31 @@ class CustomerService(
     /**
      * Gets a customer by their ID.
      *
-     * @param id the customer's ID, or null to get all customers.
+     * @param id the customer's ID.
      * @return a [CustomerDetailDTO].
+     * @throws NotFoundException if the customer is not found.
      */
-    fun getById(id: Long): CustomerDetailDTO {
+    fun getByIdCustomerDTO(id: Long): CustomerDetailDTO {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
             throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get"))
 
         return customer.get().toCustomerDetailDTO()
+    }
+
+    /**
+     * Gets a customer by their ID.
+     *
+     * @param id the customer's ID.
+     * @return a [CustomerModel].
+     * @throws NotFoundException if the customer is not found.
+     */
+    fun getByIdCustomerModel(id: Long): CustomerModel {
+        val customer = customerRepository.findById(id)
+        if (!customer.isPresent)
+            throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get"))
+
+        return customer.get()
     }
 
     /**

@@ -9,5 +9,8 @@ data class CustomerSaveDTO(
     var name: String,
 
     @field: Email
-    var email: String
+    var email: String,
+
+    @field: NotBlank
+    var password: String
 )

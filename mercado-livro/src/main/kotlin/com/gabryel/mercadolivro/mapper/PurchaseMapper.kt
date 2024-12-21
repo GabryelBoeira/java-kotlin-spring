@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.mapper
 
-import com.gabryel.mercadolivro.dto.CreatePurchaseRequest
+import com.gabryel.mercadolivro.dto.purchase.CreatePurchaseRequest
 import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.model.PurchaseModel
@@ -15,7 +15,7 @@ class PurchaseMapper(
 ) {
 
     fun toModel(purchase: CreatePurchaseRequest): PurchaseModel {
-        val customer = customerService.getById(purchase.customerId).toCustomerModel()
+        val customer = customerService.getByIdCustomerModel(purchase.customerId)
         val books = bookService.findAllById(purchase.bookIds)
 
         return when {

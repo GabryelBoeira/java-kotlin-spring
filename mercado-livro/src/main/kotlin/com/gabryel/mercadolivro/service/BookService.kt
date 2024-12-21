@@ -57,7 +57,7 @@ class BookService(
      * @param book the [BookModel] to save.
      */
     fun save(bookSave: BookSaveDTO) {
-        val book = bookSave.toBookModel(customerService.getById(bookSave.customerId))
+        val book = bookSave.toBookModel(customerService.getByIdCustomerModel(bookSave.customerId))
         bookRepository.save(book)
     }
 

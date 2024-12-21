@@ -35,7 +35,7 @@ class CustomerController(
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getCustomer(@PathVariable id: Long): CustomerDetailDTO {
-        return customerService.getById(id)
+        return customerService.getByIdCustomerDTO(id)
     }
 
     @PostMapping

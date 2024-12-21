@@ -23,7 +23,7 @@ fun CustomerModel.toCustomerDetailDTO() = CustomerDetailDTO(id, name, email, sta
  *
  * @return a new [CustomerModel] with the same name and email as this [CustomerSaveDTO].
  */
-fun CustomerSaveDTO.toCustomerModel() = CustomerModel(name = name, email = email, status = CustomerStatus.ACTIVE)
+fun CustomerSaveDTO.toCustomerModel() = CustomerModel(name = name, email = email, status = CustomerStatus.ACTIVE, password = password)
 
 
 /**
@@ -36,16 +36,10 @@ fun CustomerUpdateDTO.toCustomerModel(oldCustomer: CustomerModel): CustomerModel
         id = oldCustomer.id,
         name = this.name,
         email = this.email,
-        status = oldCustomer.status
+        status = oldCustomer.status,
+        password = oldCustomer.password
     )
 }
-
-/**
- * Converts this [CustomerDetailDTO] into a [CustomerModel].
- *
- * @return a new [CustomerModel] with the same ID, name and email as this [CustomerDetailDTO].
- */
-fun CustomerDetailDTO.toCustomerModel() = CustomerModel(id, name, email, status)
 
 /**
  * Converts this [BookSaveDTO] into a [BookModel].
@@ -55,12 +49,12 @@ fun CustomerDetailDTO.toCustomerModel() = CustomerModel(id, name, email, status)
  * @return a new [BookModel] with the same name, price and status as this [BookSaveDTO],
  * and the customer set to the given [CustomerDetailDTO].
  */
-fun BookSaveDTO.toBookModel(customer: CustomerDetailDTO): BookModel {
+fun BookSaveDTO.toBookModel(customer: CustomerModel): BookModel {
     return BookModel(
         name = this.name,
         price = this.price,
         status = BookStatus.ACTIVE,
-        customer = customer.toCustomerModel()
+        customer = customer
     )
 }
 

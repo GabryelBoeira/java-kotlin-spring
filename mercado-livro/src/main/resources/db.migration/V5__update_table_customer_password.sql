@@ -1,0 +1,1 @@
+ALTER TABLE customer ADD COLUMN password VARCHAR(255) NOT NULL COMMENT 'Senha do usuário';
