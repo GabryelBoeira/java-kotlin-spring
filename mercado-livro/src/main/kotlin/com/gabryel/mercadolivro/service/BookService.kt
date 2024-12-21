@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.enums.BookStatus
+import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toBookDetailDTO
 import com.gabryel.mercadolivro.extension.toBookModel
 import com.gabryel.mercadolivro.model.BookModel
@@ -40,7 +41,7 @@ class BookService(
     fun getById(id: Long): BookDetailDTO {
         val book = bookRepository.findById(id)
         if (!book.isPresent)
-            throw Exception("Book not found")
+            throw NotFoundException("Book not found for id: $id", "ml-get-book_not_found")
 
         return book.get().toBookDetailDTO()
     }
@@ -69,7 +70,7 @@ class BookService(
     fun update(id: Long, update: BookUpdateDTO) {
         val optBook = bookRepository.findById(id)
         if (!optBook.isPresent)
-            throw Exception("Book not found")
+            throw NotFoundException("Book not found for id: $id", "ml-update-book_not_found")
 
         bookRepository.save(update.toBookModel(optBook.get()))
     }
@@ -83,7 +84,7 @@ class BookService(
     fun delete(id: Long) {
         val optBook = bookRepository.findById(id)
         if (!optBook.isPresent)
-            throw Exception("Book not found")
+            throw NotFoundException("Book not found for id: $id", "ml-delete-book_not_found")
 
         val book = optBook.get()
         book.status = BookStatus.DELETED
