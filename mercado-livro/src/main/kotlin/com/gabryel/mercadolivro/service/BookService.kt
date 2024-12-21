@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class BookService(
-    val bookRepository: BookRepository,
-    val customerService: CustomerService
+    private val bookRepository: BookRepository,
+    private val customerService: CustomerService
 ) {
 
     /**
@@ -122,6 +122,16 @@ class BookService(
         val book = optBook.get()
         book.status = status
         bookRepository.save(book)
+    }
+
+    /**
+     * Finds all books with the given IDs.
+     *
+     * @param bookIds the IDs of the books to find.
+     * @return a list of [BookModel]s with the specified IDs.
+     */
+    fun findAllById(bookIds: Set<Long>): List<BookModel> {
+        return bookRepository.findAllById(bookIds).toList()
     }
 
 }
