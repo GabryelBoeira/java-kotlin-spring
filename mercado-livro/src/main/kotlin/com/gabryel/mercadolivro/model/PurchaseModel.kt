@@ -36,6 +36,6 @@ data class PurchaseModel(
         joinColumns = [JoinColumn(name = "purchase_id")],
         inverseJoinColumns = [JoinColumn(name = "book_id")]
     )
-    val books: List<BookModel>,
+    val books: MutableList<BookModel>,
 
 )

@@ -14,7 +14,7 @@ class PurchaseController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody puchase : CreatePurchaseRequest ) {
-
+        purchaseService.create(puchase)
     }
 
 }
