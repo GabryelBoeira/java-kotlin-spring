@@ -107,5 +107,21 @@ class BookService(
         bookRepository.saveAll(books)
     }
 
+    /**
+     * Patches a book's status by its ID.
+     *
+     * @param id the book's ID.
+     * @param status the new status of the book.
+     * @throws Exception if the book is not found.
+     */
+    fun patchStatus(id: Long, status: BookStatus) {
+        val optBook = bookRepository.findById(id)
+        if (!optBook.isPresent)
+            throw NotFoundException(ErrorsCode.BOOK_NOT_FOUND.message.format(id), ErrorsCode.BOOK_NOT_FOUND.code.format("patch"))
+
+        val book = optBook.get()
+        book.status = status
+        bookRepository.save(book)
+    }
 
 }

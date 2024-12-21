@@ -3,6 +3,7 @@ package com.gabryel.mercadolivro.controller
 import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
+import com.gabryel.mercadolivro.enums.BookStatus
 import com.gabryel.mercadolivro.service.BookService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
@@ -56,9 +57,10 @@ class BookController (
         bookService.delete(id)
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/status/{status}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateStatus(@PathVariable id: Long) {
+    fun updateStatus(@PathVariable id: Long, @PathVariable status: BookStatus) {
+        bookService.patchStatus(id, status)
     }
 
 }

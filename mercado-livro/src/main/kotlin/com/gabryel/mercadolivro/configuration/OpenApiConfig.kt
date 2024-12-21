@@ -23,7 +23,7 @@ class OpenApiConfig {
     fun controllerApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("controller-api")
-            .packagesToScan("com.gabryel.mercadolivro.controller") // Specify the package to scan
+            .packagesToScan("com.gabryel.mercadolivro.controller")
             .build()
     }
 }
