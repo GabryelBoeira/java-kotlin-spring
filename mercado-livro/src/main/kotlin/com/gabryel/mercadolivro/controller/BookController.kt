@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.service.BookService
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,6 +26,7 @@ class BookController (
 
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all active books")
     fun getByStatusActive(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookDetailDTO> {
         return bookService.getByStatusActive(pageable)
     }
