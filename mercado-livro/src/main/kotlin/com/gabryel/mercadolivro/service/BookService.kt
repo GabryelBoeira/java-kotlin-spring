@@ -134,4 +134,14 @@ class BookService(
         return bookRepository.findAllById(bookIds).toList()
     }
 
+    /**
+     * Updates the status of the given books to [BookStatus.SOLD].
+     *
+     * @param books the books to update.
+     */
+    fun updateSoldBook(books: MutableList<BookModel>) {
+        books.map { it.status = BookStatus.SOLD }
+        bookRepository.saveAll(books)
+    }
+
 }
