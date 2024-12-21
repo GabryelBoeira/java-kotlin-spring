@@ -1,6 +1,8 @@
 package com.gabryel.mercadolivro.model
 
 import com.gabryel.mercadolivro.enums.BookStatus
+import com.gabryel.mercadolivro.enums.ErrorsCode
+import com.gabryel.mercadolivro.exception.BadRequestException
 import jakarta.persistence.*
 import java.math.BigDecimal
 
@@ -23,7 +25,7 @@ data class BookModel(
     var status: BookStatus? = null
         set(value) {
             if (field == BookStatus.DELETED || field == BookStatus.CANCELLED)
-                throw Exception("Book cannot be update status to $field")
+                throw BadRequestException(ErrorsCode.BOOK_DELETED_OR_CANCELLED.message.format(field), ErrorsCode.BOOK_DELETED_OR_CANCELLED.code)
             field = value
         }
 
