@@ -30,7 +30,7 @@ class ControllerAdvice {
             exception.body.status,
             exception.body.detail,
             exception.objectName,
-            exception.allErrors.map { FieldErrorResponse((it as FieldError).field, it.defaultMessage) }
+            exception.bindingResult.fieldErrors.map { FieldErrorResponse(it.field, it.defaultMessage ?: "Invalid") }
         )
 
         return ResponseEntity(errorResponse, HttpStatus.valueOf(exception.body.status))
