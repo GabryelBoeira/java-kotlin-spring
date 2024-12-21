@@ -1,8 +1,11 @@
 package com.gabryel.mercadolivro.exception
 
 import com.gabryel.mercadolivro.dto.error.ErrorResponse
+import com.gabryel.mercadolivro.dto.error.FieldErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.FieldError
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
@@ -19,6 +22,18 @@ class ControllerAdvice {
             null)
 
         return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleException(exception: MethodArgumentNotValidException, request: WebRequest): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            exception.body.status,
+            exception.body.detail,
+            exception.objectName,
+            exception.allErrors.map { FieldErrorResponse((it as FieldError).field, it.defaultMessage) }
+        )
+
+        return ResponseEntity(errorResponse, HttpStatus.valueOf(exception.body.status))
     }
 
 }

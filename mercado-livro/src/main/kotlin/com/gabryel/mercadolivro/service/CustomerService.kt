@@ -3,6 +3,7 @@ package com.gabryel.mercadolivro.service
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.enums.CustomerStatus
+import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.model.CustomerModel
@@ -35,7 +36,7 @@ class CustomerService(
     fun getById(id: Long): CustomerDetailDTO {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw Exception("Customer not found")
+            throw NotFoundException("Customer not found for id: $id", "ml-get-customer_not_found")
 
         return customer.get().toCustomerDetailDTO()
     }
@@ -58,7 +59,7 @@ class CustomerService(
     fun update(id: Long, update: CustomerUpdateDTO) {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw Exception("Customer not found")
+            throw NotFoundException("Customer not found for id: $id", "ml-update-customer_not_found")
 
         customerRepository.save(update.toCustomerModel(customer.get()))
     }
@@ -71,7 +72,7 @@ class CustomerService(
     fun delete(id: Long) {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw Exception("Customer not found")
+            throw NotFoundException("Customer not found for id: $id", "ml-delete-customer_not_found")
 
         val delete = customer.get()
         delete.status = CustomerStatus.INACTIVE
