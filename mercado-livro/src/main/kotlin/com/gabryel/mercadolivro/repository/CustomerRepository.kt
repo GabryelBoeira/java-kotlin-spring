@@ -15,4 +15,13 @@ interface CustomerRepository : CrudRepository<CustomerModel, Long> {
      */
     fun findAllByNameContainsIgnoreCase(name: String): List<CustomerModel>
 
+
+    /**
+     * Finds a customer by their email.
+     *
+     * @param email the customer's email.
+     * @return a customer with the specified email.
+     */
+    fun findByEmail(email: String): CustomerModel?
+
 }
