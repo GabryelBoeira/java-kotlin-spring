@@ -37,7 +37,8 @@ fun CustomerUpdateDTO.toCustomerModel(oldCustomer: CustomerModel): CustomerModel
         name = this.name,
         email = this.email,
         status = oldCustomer.status,
-        password = oldCustomer.password
+        password = oldCustomer.password,
+        roles = oldCustomer.roles
     )
 }
 

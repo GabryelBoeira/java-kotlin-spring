@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.enums.ErrorsCode
+import com.gabryel.mercadolivro.enums.Profile
 import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
@@ -64,7 +65,12 @@ class CustomerService(
      * @param customer the customer[CustomerModel] to save.
      */
     fun save(customer: CustomerModel) {
-        customerRepository.save(customer)
+        val customerCopy = customer.copy(
+            roles = setOf(Profile.CUSTOMER),
+            status = CustomerStatus.ACTIVE
+        )
+
+        customerRepository.save(customerCopy)
     }
 
     /**
