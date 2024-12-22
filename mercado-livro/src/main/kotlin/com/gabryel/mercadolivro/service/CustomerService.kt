@@ -10,11 +10,13 @@ import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.repository.CustomerRepository
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
-   private val customerRepository: CustomerRepository,
+    private val customerRepository: CustomerRepository,
+    private val passwordEncoder : BCryptPasswordEncoder
 ) {
 
     /**
@@ -39,7 +41,10 @@ class CustomerService(
     fun getByIdCustomerDTO(id: Long): CustomerDetailDTO {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get"))
+            throw NotFoundException(
+                ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id),
+                ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get")
+            )
 
         return customer.get().toCustomerDetailDTO()
     }
@@ -54,7 +59,10 @@ class CustomerService(
     fun getByIdCustomerModel(id: Long): CustomerModel {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get"))
+            throw NotFoundException(
+                ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id),
+                ErrorsCode.CUSTOMER_NOT_FOUND.code.format("get")
+            )
 
         return customer.get()
     }
@@ -67,7 +75,7 @@ class CustomerService(
     fun save(customer: CustomerModel) {
         val customerCopy = customer.copy(
             roles = setOf(Profile.CUSTOMER),
-            status = CustomerStatus.ACTIVE
+            password = passwordEncoder.encode(customer.password)
         )
 
         customerRepository.save(customerCopy)
@@ -82,7 +90,10 @@ class CustomerService(
     fun update(id: Long, update: CustomerUpdateDTO) {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("update"))
+            throw NotFoundException(
+                ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id),
+                ErrorsCode.CUSTOMER_NOT_FOUND.code.format("update")
+            )
 
         customerRepository.save(update.toCustomerModel(customer.get()))
     }
@@ -95,8 +106,11 @@ class CustomerService(
     fun delete(id: Long) {
         val customer = customerRepository.findById(id)
         if (!customer.isPresent)
-            throw NotFoundException(ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id), ErrorsCode.CUSTOMER_NOT_FOUND.code.format("delete"))
-        
+            throw NotFoundException(
+                ErrorsCode.CUSTOMER_NOT_FOUND.message.format(id),
+                ErrorsCode.CUSTOMER_NOT_FOUND.code.format("delete")
+            )
+
         val delete = customer.get()
         delete.status = CustomerStatus.INACTIVE
         customerRepository.save(delete)
