@@ -34,6 +34,7 @@ class SecurityConfig(
     private val PUBLIC_POST_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_GET_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_MATCHERS = arrayOf("/login")
+    private val ADMIN_MATCHERS = arrayOf("/admin/**", "/actuator/**")
 
     @Bean
     fun securityFilter(http: HttpSecurity): SecurityFilterChain {
@@ -44,6 +45,7 @@ class SecurityConfig(
                     .requestMatchers(*PUBLIC_MATCHERS).permitAll()
                     .requestMatchers(HttpMethod.GET, *PUBLIC_GET_MATCHERS).permitAll()
                     .requestMatchers(HttpMethod.POST, *PUBLIC_POST_MATCHERS).permitAll()
+                    .requestMatchers(*ADMIN_MATCHERS).hasRole("ADMIN")
                     .anyRequest().authenticated()
             })
             .formLogin(Customizer.withDefaults())
