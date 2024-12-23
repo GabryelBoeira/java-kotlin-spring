@@ -4,7 +4,7 @@ import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.enums.ErrorsCode
-import com.gabryel.mercadolivro.enums.Profile
+import com.gabryel.mercadolivro.enums.Role
 import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
@@ -74,7 +74,7 @@ class CustomerService(
      */
     fun save(customer: CustomerModel) {
         val customerCopy = customer.copy(
-            roles = setOf(Profile.CUSTOMER),
+            roles = setOf(Role.CUSTOMER),
             password = passwordEncoder.encode(customer.password)
         )
 

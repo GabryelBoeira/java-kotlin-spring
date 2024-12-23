@@ -1,7 +1,7 @@
 package com.gabryel.mercadolivro.model
 
 import com.gabryel.mercadolivro.enums.CustomerStatus
-import com.gabryel.mercadolivro.enums.Profile
+import com.gabryel.mercadolivro.enums.Role
 import jakarta.persistence.*
 
 @Entity(name = "customer")
@@ -19,9 +19,9 @@ data class CustomerModel(
     var status: CustomerStatus,
 
     @CollectionTable(name = "roles", joinColumns = [JoinColumn(name = "customer_id")])
-    @ElementCollection(targetClass = Profile::class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER)
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    var roles: Set<Profile> = setOf()
+    var roles: Set<Role> = setOf()
 
 )
