@@ -31,6 +31,7 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.7.0")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.8.0")

@@ -31,3 +31,7 @@ springdoc:
     operationsSorter: method
   api-docs:
     path: /api-docs
+
+jwt:
+  secret: c96fc1cd-9237-48ef-9cdc-7ada38e1433e
+  expiration: 600000
