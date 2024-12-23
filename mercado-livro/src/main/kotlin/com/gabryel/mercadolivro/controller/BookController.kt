@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.enums.BookStatus
+import com.gabryel.mercadolivro.secutity.UserCanOnlyAccessTheirOwnResource
 import com.gabryel.mercadolivro.service.BookService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -21,6 +23,7 @@ class BookController (
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): Page<BookDetailDTO> {
         return bookService.getAll(pageable, name)
     }
@@ -47,6 +50,7 @@ class BookController (
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @UserCanOnlyAccessTheirOwnResource
     fun update(@PathVariable id: Long, @Valid @RequestBody book: BookUpdateDTO) {
         bookService.update(id,book)
     }

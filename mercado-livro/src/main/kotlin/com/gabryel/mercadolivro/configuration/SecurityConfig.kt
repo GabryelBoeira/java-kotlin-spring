@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -35,7 +34,7 @@ class SecurityConfig(
     private val PUBLIC_POST_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_GET_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_MATCHERS = arrayOf("/login")
-    private val ADMIN_MATCHERS = arrayOf("/admin/**", "/actuator/**")
+    private val ADMIN_MATCHERS = arrayOf("/admin/**", "/actuator/**", "/delete/**")
     private val SWAGGER_MATCHERS = arrayOf("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
 
 
