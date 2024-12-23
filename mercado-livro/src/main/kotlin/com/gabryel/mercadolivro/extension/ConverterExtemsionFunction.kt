@@ -6,10 +6,12 @@ import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerSaveDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
+import com.gabryel.mercadolivro.dto.purchase.PurchasesDetailDTO
 import com.gabryel.mercadolivro.enums.BookStatus
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.model.BookModel
 import com.gabryel.mercadolivro.model.CustomerModel
+import com.gabryel.mercadolivro.model.PurchaseModel
 
 /**
  * Converts this [CustomerDetailDTO] into a [CustomerModel].
@@ -23,7 +25,8 @@ fun CustomerModel.toCustomerDetailDTO() = CustomerDetailDTO(id, name, email, sta
  *
  * @return a new [CustomerModel] with the same name and email as this [CustomerSaveDTO].
  */
-fun CustomerSaveDTO.toCustomerModel() = CustomerModel(name = name, email = email, status = CustomerStatus.ACTIVE, password = password)
+fun CustomerSaveDTO.toCustomerModel() =
+    CustomerModel(name = name, email = email, status = CustomerStatus.ACTIVE, password = password)
 
 
 /**
@@ -83,3 +86,10 @@ fun BookUpdateDTO.toBookModel(oldBook: BookModel): BookModel {
         customer = oldBook.customer
     )
 }
+
+/**
+ * Converts this [PurchaseModel] into a [PurchasesDetailDTO].
+ *
+ * @return a new [PurchasesDetailDTO] with the same ID, NFE, price, creation date and customer as this [PurchaseModel].
+ */
+fun PurchaseModel.toPurchaseDetailDTO() = PurchasesDetailDTO(id, nfe, price, createdAt, customer.toCustomerDetailDTO(), books.map { it.toBookDetailDTO() })
