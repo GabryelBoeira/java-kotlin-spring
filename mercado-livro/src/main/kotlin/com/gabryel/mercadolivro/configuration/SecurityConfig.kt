@@ -1,8 +1,11 @@
-package com.gabryel.mercadolivro.configuration.secutity
+package com.gabryel.mercadolivro.configuration
 
 import com.gabryel.mercadolivro.repository.CustomerRepository
+import com.gabryel.mercadolivro.secutity.AuthenticationFilter
+import com.gabryel.mercadolivro.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer
@@ -13,27 +16,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
 import org.springframework.security.config.core.GrantedAuthorityDefaults
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig (
+@EnableMethodSecurity(securedEnabled = true)
+class SecurityConfig(
     private val customerRepository: CustomerRepository,
-    private val authenticationConfiguration: AuthenticationConfiguration
+    private val authenticationConfiguration: AuthenticationConfiguration,
+    private val userDetails: CustomUserDetailsService
 ) {
 
     private val PUBLIC_POST_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_GET_MATCHERS = arrayOf("/customers", "/books")
     private val PUBLIC_MATCHERS = arrayOf("/login")
 
-
     @Bean
-    @Throws(Exception::class)
     fun securityFilter(http: HttpSecurity): SecurityFilterChain {
         return http
             .csrf { obj: CsrfConfigurer<HttpSecurity> -> obj.disable() }
@@ -44,32 +44,9 @@ class SecurityConfig (
                     .requestMatchers(HttpMethod.POST, *PUBLIC_POST_MATCHERS).permitAll()
                     .anyRequest().authenticated()
             })
-            .httpBasic(Customizer.withDefaults())
             .formLogin(Customizer.withDefaults())
             .addFilter(AuthenticationFilter(authenticationManager(), customerRepository))
             .build()
-    }
-
-    @Bean
-    fun grantedAuthorityDefaults(): GrantedAuthorityDefaults {
-        return GrantedAuthorityDefaults("")
-    }
-
-    @Bean
-    fun userDetailsService(): UserDetailsService {
-        val user = User
-            .withUsername("user")
-            .password(passwordEncoder().encode("user"))
-            .roles("USER")
-            .build()
-
-        val admin = User
-            .withUsername("admin")
-            .password(passwordEncoder().encode("admin"))
-            .roles("USER", "ADMIN")
-            .build()
-
-        return InMemoryUserDetailsManager(user, admin)
     }
 
     @Bean
@@ -82,4 +59,12 @@ class SecurityConfig (
         return authenticationConfiguration.authenticationManager
     }
 
+    @Bean
+    @Primary
+    fun AuthenticationManagerBuilder(auth: AuthenticationManagerBuilder): AuthenticationManagerBuilder {
+        auth.userDetailsService(userDetails)
+            .passwordEncoder(passwordEncoder())
+
+        return auth
+    }
 }
