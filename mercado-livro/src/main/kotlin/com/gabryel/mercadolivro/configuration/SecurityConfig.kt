@@ -2,6 +2,8 @@ package com.gabryel.mercadolivro.configuration
 
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import com.gabryel.mercadolivro.secutity.AuthenticationFilter
+import com.gabryel.mercadolivro.secutity.AuthorizationFilter
+import com.gabryel.mercadolivro.secutity.JwtUtils
 import com.gabryel.mercadolivro.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,7 +27,8 @@ import org.springframework.security.web.SecurityFilterChain
 class SecurityConfig(
     private val customerRepository: CustomerRepository,
     private val authenticationConfiguration: AuthenticationConfiguration,
-    private val userDetails: CustomUserDetailsService
+    private val userDetails: CustomUserDetailsService,
+    private val jwtUtils: JwtUtils
 ) {
 
     private val PUBLIC_POST_MATCHERS = arrayOf("/customers", "/books")
@@ -44,7 +47,8 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             })
             .formLogin(Customizer.withDefaults())
-            .addFilter(AuthenticationFilter(authenticationManager(), customerRepository))
+            .addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtils))
+            .addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtils))
             .build()
     }
 
