@@ -3,6 +3,7 @@ package com.gabryel.mercadolivro.configuration
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import com.gabryel.mercadolivro.secutity.AuthenticationFilter
 import com.gabryel.mercadolivro.secutity.AuthorizationFilter
+import com.gabryel.mercadolivro.secutity.CustomAuthenticationEntryPoint
 import com.gabryel.mercadolivro.secutity.JwtUtils
 import com.gabryel.mercadolivro.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
+import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
@@ -28,7 +30,8 @@ class SecurityConfig(
     private val customerRepository: CustomerRepository,
     private val authenticationConfiguration: AuthenticationConfiguration,
     private val userDetails: CustomUserDetailsService,
-    private val jwtUtils: JwtUtils
+    private val jwtUtils: JwtUtils,
+    private val customEntryPoint: CustomAuthenticationEntryPoint
 ) {
 
     private val PUBLIC_POST_MATCHERS = arrayOf("/customers", "/books")
@@ -54,6 +57,7 @@ class SecurityConfig(
             .formLogin(Customizer.withDefaults())
             .addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtils))
             .addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtils))
+            .exceptionHandling { obj: ExceptionHandlingConfigurer<HttpSecurity> -> obj.authenticationEntryPoint(customEntryPoint) }
             .build()
     }
 

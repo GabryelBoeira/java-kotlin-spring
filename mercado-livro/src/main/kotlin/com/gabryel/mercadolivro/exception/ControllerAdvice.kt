@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.dto.error.ErrorResponse
 import com.gabryel.mercadolivro.dto.error.FieldErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -41,6 +42,18 @@ class ControllerAdvice {
             400,
             exception.message,
             exception.code,
+            null
+        )
+
+        return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleException(exception: AccessDeniedException, request: WebRequest): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            402,
+            exception.message,
+            "cannot.access.resource",
             null
         )
 

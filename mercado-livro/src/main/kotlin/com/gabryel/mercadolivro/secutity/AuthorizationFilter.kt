@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.secutity
 
-import com.gabryel.mercadolivro.exception.AuthException
+import com.gabryel.mercadolivro.exception.AuthenticationException
 import com.gabryel.mercadolivro.service.CustomUserDetailsService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -36,7 +36,7 @@ class AuthorizationFilter(
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken {
         if (jwtUtils.isInvalidToken(token))
-            throw AuthException("Token inválido", "invalid.token")
+            throw AuthenticationException("Token inválido", "invalid.token")
 
         val subject = jwtUtils.getSubject(token)
         val user = userDetailsService.loadUserByUsername(subject)

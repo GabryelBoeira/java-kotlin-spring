@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.service
 
-import com.gabryel.mercadolivro.exception.AuthException
+import com.gabryel.mercadolivro.exception.AuthenticationException
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import com.gabryel.mercadolivro.secutity.CustomUserDetails
 import org.springframework.security.core.userdetails.UserDetails
@@ -16,7 +16,7 @@ class CustomUserDetailsService(
         return CustomUserDetails(
             customerRepository
                 .findById(id!!.toLong())
-                .orElseThrow { throw AuthException("Usuário não encontrado", "user.not.found") }
+                .orElseThrow { throw AuthenticationException("Usuário não encontrado", "user.not.found") }
         )
     }
 

@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.secutity
 
-import com.gabryel.mercadolivro.exception.AuthException
+import com.gabryel.mercadolivro.exception.AuthenticationException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -71,7 +71,7 @@ class JwtUtils {
      *
      * @param token the JWT token to parse
      * @return the claims extracted from the token
-     * @throws AuthException if the token is invalid or cannot be parsed
+     * @throws AuthenticationException if the token is invalid or cannot be parsed
      */
     private fun getClaims(token: String): Claims {
         try {
@@ -81,7 +81,7 @@ class JwtUtils {
                 .parseClaimsJws(token)
                 .body
         } catch (e: Exception) {
-            throw AuthException("Token inválido", "invalid.token")
+            throw AuthenticationException("Token inválido", "invalid.token")
         }
     }
 
