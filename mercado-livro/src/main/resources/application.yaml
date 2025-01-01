@@ -3,7 +3,8 @@ spring:
     default-property-inclusion: non_null
   application:
     name: mercado-livro
-
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     hibernate:
       ddl-auto: update
