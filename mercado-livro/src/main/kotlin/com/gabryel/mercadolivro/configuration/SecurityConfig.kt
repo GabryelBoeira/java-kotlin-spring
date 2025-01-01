@@ -19,6 +19,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
@@ -55,9 +57,18 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             })
             .formLogin(Customizer.withDefaults())
-            .addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtils))
             .addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtils))
-            .exceptionHandling { obj: ExceptionHandlingConfigurer<HttpSecurity> -> obj.authenticationEntryPoint(customEntryPoint) }
+            .addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtils))
+            .exceptionHandling { obj: ExceptionHandlingConfigurer<HttpSecurity> ->
+                obj.authenticationEntryPoint(
+                    customEntryPoint
+                )
+            }
+            .sessionManagement { obj: SessionManagementConfigurer<HttpSecurity> ->
+                obj.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
+            }
             .build()
     }
 

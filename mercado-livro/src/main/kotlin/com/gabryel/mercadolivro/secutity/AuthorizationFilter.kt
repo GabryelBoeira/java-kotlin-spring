@@ -25,7 +25,7 @@ class AuthorizationFilter(
      * @param filterChain the filter chain to pass the request and response to the next filter
      */
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        val authorization = request.getHeader("Autorization")
+        val authorization = request.getHeader("Authorization")
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
             val authResult = getAuthentication(authorization.split(" ")[1])
