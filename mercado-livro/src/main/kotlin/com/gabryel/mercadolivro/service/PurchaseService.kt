@@ -1,9 +1,11 @@
 package com.gabryel.mercadolivro.service
 
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.dto.purchase.CreatePurchaseRequest
 import com.gabryel.mercadolivro.dto.purchase.PurchasesDetailDTO
 import com.gabryel.mercadolivro.events.PurchaseEventProducer
 import com.gabryel.mercadolivro.exception.BadRequestException
+import com.gabryel.mercadolivro.extension.toPageResponse
 import com.gabryel.mercadolivro.extension.toPurchaseDetailDTO
 import com.gabryel.mercadolivro.mapper.PurchaseMapper
 import com.gabryel.mercadolivro.model.PurchaseModel
@@ -46,8 +48,8 @@ class PurchaseService(
      * @param purchase the pagination information.
      * @return a paginated list of all [PurchasesDetailDTO]s.
      */
-    fun findAllPageable(purchase: Pageable): Page<PurchasesDetailDTO> {
-        return purchaseRepository.findAll(purchase).map { pm -> pm.toPurchaseDetailDTO() }
+    fun findAllPageable(purchase: Pageable): PageResponse<PurchasesDetailDTO> {
+        return purchaseRepository.findAll(purchase).map { pm -> pm.toPurchaseDetailDTO() } .toPageResponse()
     }
 
 }

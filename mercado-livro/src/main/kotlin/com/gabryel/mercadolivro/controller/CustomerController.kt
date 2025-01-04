@@ -3,11 +3,14 @@ package com.gabryel.mercadolivro.controller
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerSaveDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.extension.toCustomerModel
 import com.gabryel.mercadolivro.secutity.UserCanOnlyAccessTheirOwnResource
 import com.gabryel.mercadolivro.service.BookService
 import com.gabryel.mercadolivro.service.CustomerService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -31,8 +34,8 @@ class CustomerController(
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getAllCustomers(@RequestParam name: String?): List<CustomerDetailDTO> {
-        return customerService.getAll(name)
+    fun getAllCustomers(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): PageResponse<CustomerDetailDTO> {
+        return customerService.getAll(pageable, name)
     }
 
     @GetMapping("/{id}")

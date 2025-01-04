@@ -2,14 +2,17 @@ package com.gabryel.mercadolivro.service
 
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.enums.ErrorsCode
 import com.gabryel.mercadolivro.enums.Role
 import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.extension.toCustomerModel
+import com.gabryel.mercadolivro.extension.toPageResponse
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.repository.CustomerRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -25,10 +28,10 @@ class CustomerService(
      * @param name the name to filter by, or null to get all customers.
      * @return a list of [CustomerDetailDTO]s.
      */
-    fun getAll(name: String?): List<CustomerDetailDTO> {
+    fun getAll(pageable : Pageable, name: String?): PageResponse<CustomerDetailDTO> {
         if (name == null)
-            return customerRepository.findAll().map { cm -> cm.toCustomerDetailDTO() }
-        return customerRepository.findAllByNameContainsIgnoreCase(name).map { cm -> cm.toCustomerDetailDTO() }
+            return customerRepository.findAll(pageable).map { cm -> cm.toCustomerDetailDTO() } .toPageResponse()
+        return customerRepository.findAllByNameContainsIgnoreCase(pageable, name).map { cm -> cm.toCustomerDetailDTO() } .toPageResponse()
     }
 
     /**

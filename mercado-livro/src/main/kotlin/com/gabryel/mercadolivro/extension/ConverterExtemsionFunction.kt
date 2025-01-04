@@ -6,12 +6,14 @@ import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerDetailDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerSaveDTO
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.dto.purchase.PurchasesDetailDTO
 import com.gabryel.mercadolivro.enums.BookStatus
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.model.BookModel
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.model.PurchaseModel
+import org.springframework.data.domain.Page
 
 /**
  * Converts this [CustomerDetailDTO] into a [CustomerModel].
@@ -93,3 +95,17 @@ fun BookUpdateDTO.toBookModel(oldBook: BookModel): BookModel {
  * @return a new [PurchasesDetailDTO] with the same ID, NFE, price, creation date and customer as this [PurchaseModel].
  */
 fun PurchaseModel.toPurchaseDetailDTO() = PurchasesDetailDTO(id, nfe, price, createdAt, customer.toCustomerDetailDTO(), books.map { it.toBookDetailDTO() })
+
+/**
+ * Converts this [Page] into a [PageResponse].
+ *
+ * @return a new [PageResponse] containing the same data as this [Page].
+ */
+fun <T> Page<T>.toPageResponse(): PageResponse<T> {
+    return PageResponse(
+        this.content,
+        this.number,
+        this.totalPages,
+        this.totalElements,
+        this.size)
+}

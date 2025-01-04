@@ -1,6 +1,7 @@
 package com.gabryel.mercadolivro.controller
 
 import com.gabryel.mercadolivro.dto.book.BookDetailDTO
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.dto.purchase.CreatePurchaseRequest
 import com.gabryel.mercadolivro.dto.purchase.PurchasesDetailDTO
 import com.gabryel.mercadolivro.service.PurchaseService
@@ -18,7 +19,7 @@ class PurchaseController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAllPurchases(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<PurchasesDetailDTO> {
+    fun findAllPurchases(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<PurchasesDetailDTO> {
         return purchaseService.findAllPageable(pageable)
     }
 

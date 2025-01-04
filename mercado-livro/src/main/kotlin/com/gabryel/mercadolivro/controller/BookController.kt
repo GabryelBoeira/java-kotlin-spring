@@ -3,6 +3,7 @@ package com.gabryel.mercadolivro.controller
 import com.gabryel.mercadolivro.dto.book.BookDetailDTO
 import com.gabryel.mercadolivro.dto.book.BookSaveDTO
 import com.gabryel.mercadolivro.dto.book.BookUpdateDTO
+import com.gabryel.mercadolivro.dto.page.PageResponse
 import com.gabryel.mercadolivro.enums.BookStatus
 import com.gabryel.mercadolivro.secutity.UserCanOnlyAccessTheirOwnResource
 import com.gabryel.mercadolivro.service.BookService
@@ -24,14 +25,14 @@ class BookController (
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): Page<BookDetailDTO> {
+    fun getAll(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): PageResponse<BookDetailDTO> {
         return bookService.getAll(pageable, name)
     }
 
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all active books")
-    fun getByStatusActive(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookDetailDTO> {
+    fun getByStatusActive(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<BookDetailDTO> {
         return bookService.getByStatusActive(pageable)
     }
 
