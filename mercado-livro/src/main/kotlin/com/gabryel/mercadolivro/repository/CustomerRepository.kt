@@ -17,7 +17,7 @@ interface CustomerRepository : CrudRepository<CustomerModel, Long> {
      * @param name the substring to search for within customer names.
      * @return a paginated list of [CustomerModel]s whose names contain the specified substring.
      */
-    fun findAllByNameContainsIgnoreCase(pageable: Pageable, name: String): Page<CustomerModel>
+    fun findAllByNameContainsIgnoreCase(pageable: Pageable?, name: String): Page<CustomerModel>
 
     /**
      * Finds a customer by their email.
@@ -33,6 +33,6 @@ interface CustomerRepository : CrudRepository<CustomerModel, Long> {
      * @param pageable the pagination information.
      * @return a paginated list of all [CustomerModel]s.
      */
-    fun findAll(pageable: Pageable): Page<CustomerModel>
+    fun findAll(pageable: Pageable?): Page<CustomerModel>
 
 }

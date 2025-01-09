@@ -28,7 +28,7 @@ class CustomerService(
      * @param name the name to filter by, or null to get all customers.
      * @return a list of [CustomerDetailDTO]s.
      */
-    fun getAll(pageable : Pageable, name: String?): PageResponse<CustomerDetailDTO> {
+    fun getAll(pageable : Pageable?, name: String?): PageResponse<CustomerDetailDTO> {
         if (name == null)
             return customerRepository.findAll(pageable).map { cm -> cm.toCustomerDetailDTO() } .toPageResponse()
         return customerRepository.findAllByNameContainsIgnoreCase(pageable, name).map { cm -> cm.toCustomerDetailDTO() } .toPageResponse()
