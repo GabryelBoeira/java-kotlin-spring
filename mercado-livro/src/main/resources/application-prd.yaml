@@ -1,0 +1,22 @@
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  application:
+    name: mercado-livro
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/mercado-livro-prd?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db.migration
+
+jwt:
+  secret: ef366ba6-579c-4a0e-8996-757fe05e6edd
+  expiration: 600000
