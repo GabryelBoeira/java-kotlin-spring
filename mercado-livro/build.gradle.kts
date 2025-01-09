@@ -35,13 +35,17 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("org.springdoc:springdoc-openapi-kotlin:1.8.0")
 
+	testImplementation("io.mockk:mockk:1.13.14")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	testRuntimeOnly("com.h2database:h2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
