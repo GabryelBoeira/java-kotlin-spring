@@ -36,19 +36,19 @@ class CustomerServiceTest {
      *
      * @return a list of 5 [CustomerModel] instances with unique IDs and emails.
      */
-    fun buildCustomerList () : List<CustomerModel> {
-        val list = mutableListOf<CustomerModel>()
-        for (i in 1..5) {
-            list.add(CustomerModel(
-                id = i.toLong(),
-                name = "customer name $i",
-                email = "$i${UUID.randomUUID()}@email.com",
-                status = CustomerStatus.ACTIVE,
-                password = "password$i",
-                roles = setOf(Role.CUSTOMER)
-            ))
+    private fun buildCustomerList() : List<CustomerModel> {
+        return buildList {
+            for (i in 1..5) {
+                add(CustomerModel(
+                    id = i.toLong(),
+                    name = "customer name $i",
+                    email = "$i${UUID.randomUUID()}@email.com",
+                    status = CustomerStatus.ACTIVE,
+                    password = "password$i",
+                    roles = setOf(Role.CUSTOMER)
+                ))
+            }
         }
-        return list
     }
 
 
