@@ -1,13 +1,16 @@
 package com.gabryel.mercadolivro.service
 
+import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.enums.Role
 import com.gabryel.mercadolivro.exception.NotFoundException
+import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
 import com.gabryel.mercadolivro.model.CustomerModel
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -30,6 +33,7 @@ class CustomerServiceTest {
     private lateinit var passwordEncoder: BCryptPasswordEncoder
 
     @InjectMockKs
+    @SpyK
     private lateinit var customerService: CustomerService
 
     @Test
@@ -78,7 +82,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    fun `should return customer by id`() {
+    fun `should return customerModel by id`() {
         val id = Random().nextInt().toLong()
         val fakeCustomer = buildCustomer(id = id)
 
@@ -91,7 +95,35 @@ class CustomerServiceTest {
     }
 
     @Test
-    fun `should throw error when customer not found`() {
+    fun `should throw error when customerModel not found`() {
+        val id = Random().nextInt().toLong()
+
+        every { customerRepository.findById(id) } returns Optional.empty()
+
+        val error = assertThrows<NotFoundException> {
+            customerService.getByIdCustomerModel(id)
+        }
+
+        assertEquals("Customer not found for [${id}]", error.message)
+        assertEquals("ml-[get]-customer_not_found", error.internalCode)
+        verify(exactly = 1) { customerRepository.findById(id) }
+    }
+
+    @Test
+    fun `should return customerDetailDTO by id`() {
+        val id = Random().nextInt().toLong()
+        val fakeCustomer = buildCustomer(id = id)
+
+        every { customerRepository.findById(id) } returns Optional.of(fakeCustomer)
+
+        val customerDto = customerService.getByIdCustomerDTO(id)
+
+        assertEquals(fakeCustomer.toCustomerDetailDTO(), customerDto)
+        verify(exactly = 1) { customerRepository.findById(id) }
+    }
+
+    @Test
+    fun `should throw error when CustomerDetailDTO not found`() {
         val id = Random().nextInt().toLong()
 
         every { customerRepository.findById(id) } returns Optional.empty()
@@ -103,6 +135,70 @@ class CustomerServiceTest {
         assertEquals("Customer not found for [${id}]", error.message)
         assertEquals("ml-[get]-customer_not_found", error.internalCode)
         verify(exactly = 1) { customerRepository.findById(id) }
+    }
+
+    @Test
+    fun `should update customer`() {
+        val id = Random().nextInt().toLong()
+        val fakeCustomer = buildCustomer(id = id, name = "name", email = "email")
+
+        every { customerRepository.findById(id) } returns Optional.of(fakeCustomer)
+        every { customerRepository.save(fakeCustomer) } returns fakeCustomer
+
+        customerService.update(id, CustomerUpdateDTO("name", "email"))
+
+        verify(exactly = 1) { customerRepository.findById(id) }
+        verify(exactly = 1) { customerRepository.save(fakeCustomer) }
+    }
+
+    @Test
+    fun `should throw not found exception when update customer`() {
+        val id = Random().nextInt().toLong()
+        val fakeCustomer = buildCustomer(id = id)
+
+        every { customerRepository.findById(id) } returns Optional.empty()
+        every { customerRepository.save(fakeCustomer) } returns fakeCustomer
+
+        val error = assertThrows<NotFoundException>{
+            customerService.update(id, CustomerUpdateDTO("name", "email"))
+        }
+
+        assertEquals("Customer not found for [${id}]", error.message)
+        assertEquals("ml-[update]-customer_not_found", error.internalCode)
+
+        verify(exactly = 1) { customerRepository.findById(id) }
+        verify(exactly = 0) { customerRepository.save(any()) }
+    }
+
+    @Test
+    fun `should delete customer`() {
+        val id = Random().nextInt().toLong()
+        val fakeCustomer = buildCustomer(id = id)
+        val expectedCustomer = fakeCustomer.copy(status = CustomerStatus.INACTIVE)
+
+        every { customerRepository.findById(id) } returns Optional.of(fakeCustomer)
+        every { customerRepository.save(expectedCustomer) } returns expectedCustomer
+
+        customerService.delete(id)
+
+        verify(exactly = 1) { customerRepository.findById(id) }
+        verify(exactly = 1) { customerRepository.save(expectedCustomer) }
+    }
+
+
+    @Test
+    fun `should throw not found exception when delete customer`() {
+        val id = Random().nextInt().toLong()
+
+        every { customerRepository.findById(id) } returns Optional.empty()
+
+        val error = assertThrows<NotFoundException>{ customerService.delete(id) }
+
+        assertEquals("Customer not found for [${id}]", error.message)
+        assertEquals("ml-[delete]-customer_not_found", error.internalCode)
+
+        verify(exactly = 1) { customerRepository.findById(id) }
+        verify(exactly = 0) { customerRepository.save(any()) }
     }
 
     /**
