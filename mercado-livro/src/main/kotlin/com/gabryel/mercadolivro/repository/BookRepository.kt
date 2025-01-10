@@ -16,7 +16,7 @@ interface BookRepository : CrudRepository<BookModel, Long> {
      * @param name the name of the books to find.
      * @return a list of [BookModel]s with the specified name.
      */
-    fun findAllByNameContainsIgnoreCase(pageable: Pageable, name: String): Page<BookModel>
+    fun findAllByNameContainsIgnoreCase(pageable: Pageable?, name: String): Page<BookModel>
 
     /**
      * Finds all books with the given status.
@@ -42,6 +42,6 @@ interface BookRepository : CrudRepository<BookModel, Long> {
      * @param pageable the pagination information.
      * @return a paginated list of all [BookModel]s.
      */
-    fun findAll(pageable: Pageable): Page<BookModel>
+    fun findAll(pageable: Pageable?): Page<BookModel>
 
 }

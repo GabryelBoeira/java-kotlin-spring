@@ -25,9 +25,10 @@ class BookService(
      * Gets all books, optionally filtered by name.
      *
      * @param name the name to filter by, or null to get all books.
+     * @param pageable the pagination information.
      * @return a list of [BookDetailDTO]s.
      */
-    fun getAll(pageable: Pageable, name: String?): PageResponse<BookDetailDTO> {
+    fun getAll(pageable: Pageable?, name: String?): PageResponse<BookDetailDTO> {
         if (name == null)
             return bookRepository.findAll(pageable).map { bk -> bk.toBookDetailDTO() } .toPageResponse()
         return bookRepository.findAllByNameContainsIgnoreCase(pageable, name).map { bk -> bk.toBookDetailDTO() } .toPageResponse()

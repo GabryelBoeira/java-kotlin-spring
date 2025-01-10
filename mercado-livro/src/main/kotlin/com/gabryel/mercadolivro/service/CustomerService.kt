@@ -26,6 +26,7 @@ class CustomerService(
      * Gets all customers, optionally filtered by name.
      *
      * @param name the name to filter by, or null to get all customers.
+     * @param pageable the pagination information.
      * @return a list of [CustomerDetailDTO]s.
      */
     fun getAll(pageable : Pageable?, name: String?): PageResponse<CustomerDetailDTO> {
