@@ -9,14 +9,13 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.util.UUID
+import java.util.*
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ExtendWith(MockKExtension::class)
@@ -64,6 +63,21 @@ class CustomerServiceTest {
         assertNotNull(customersPage)
         verify(exactly = 1) { customerRepository.findAll(any()) }
         verify(exactly = 0) { customerRepository.findAllByNameContainsIgnoreCase(any() ,any()) }
+    }
+
+    @Test
+    fun `should return customers when name is informed`() {
+        val fakeCustomers = buildCustomerList()
+        val nameCustomer = fakeCustomers[0].name
+        val fakePageCustomers = PageImpl(listOf(fakeCustomers[0]), PageRequest.of(0, 10), 1)
+
+        every { customerRepository.findAllByNameContainsIgnoreCase(any(), nameCustomer) } returns fakePageCustomers
+
+        val customers = customerService.getAll(null, nameCustomer)
+
+        assertEquals(nameCustomer, customers.items[0].name)
+        verify(exactly = 0) { customerRepository.findAll(null) }
+        verify(exactly = 1) { customerRepository.findAllByNameContainsIgnoreCase(null, nameCustomer) }
     }
 
 
