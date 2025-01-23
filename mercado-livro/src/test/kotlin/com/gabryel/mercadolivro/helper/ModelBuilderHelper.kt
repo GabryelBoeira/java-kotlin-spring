@@ -4,6 +4,7 @@ import com.gabryel.mercadolivro.enums.CustomerStatus
 import com.gabryel.mercadolivro.enums.Role
 import com.gabryel.mercadolivro.model.BookModel
 import com.gabryel.mercadolivro.model.CustomerModel
+import com.gabryel.mercadolivro.model.PurchaseModel
 import java.math.BigDecimal
 import java.util.*
 
@@ -16,7 +17,7 @@ import java.util.*
  * @param customerId the ID of the customer the book belongs to. If null, a new UUID will be generated.
  * @return a new [BookModel] instance with the given properties.
  */
-fun buildNewBook(
+fun buildBook(
     id: Long? = null,
     name: String = "book name",
     price: BigDecimal = BigDecimal.ZERO,
@@ -25,7 +26,7 @@ fun buildNewBook(
     id = id,
     name = name,
     price = price,
-    customer = buildCustomer(id = customerId?: Random().nextInt().toLong())
+    customer = buildCustomer(id = customerId ?: Random().nextInt().toLong())
 )
 
 /**
@@ -72,3 +73,28 @@ fun buildCustomerList(size: Int = 5): List<CustomerModel> {
         }
     }
 }
+
+
+/**
+ * Builds a new [PurchaseModel] instance with the given properties.
+ *
+ * @param id the purchase's ID.
+ * @param customer the customer who made the purchase. Defaults to a new [CustomerModel] instance.
+ * @param books the list of books purchased. Defaults to an empty mutable list.
+ * @param nfe the NFE number for the purchase. Defaults to a random UUID string.
+ * @param price the total price of the purchase. Defaults to 10.00.
+ * @return a new [PurchaseModel] instance with the given properties.
+ */
+fun buildPurchase(
+    id: Long? = null,
+    customer: CustomerModel = buildCustomer(),
+    books: MutableList<BookModel> = mutableListOf(),
+    nfe: String = UUID.randomUUID().toString(),
+    price: BigDecimal = BigDecimal.TEN
+) = PurchaseModel(
+    id = id,
+    customer = customer,
+    books = books,
+    nfe = nfe,
+    price = price
+)

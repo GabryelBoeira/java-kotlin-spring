@@ -1,6 +1,6 @@
 package com.gabryel.mercadolivro.service
 
-import com.gabryel.mercadolivro.helper.buildNewBook
+import com.gabryel.mercadolivro.helper.buildBook
 import com.gabryel.mercadolivro.repository.BookRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -26,7 +26,7 @@ class BookServiceTest {
 
     @Test
     fun `Get all books without filter returns PageResponse-BookDetailDTO`() {
-        val fakeBooks = listOf(buildNewBook(), buildNewBook(), buildNewBook())
+        val fakeBooks = listOf(buildBook(), buildBook(), buildBook())
         val fakePageBooks = PageImpl(fakeBooks, PageRequest.of(0, 10), fakeBooks.size.toLong())
 
         every { bookRepository.findAll(any()) } returns fakePageBooks
@@ -40,7 +40,7 @@ class BookServiceTest {
 
     @Test
     fun `Get all for name books without filter returns PageResponse-BookDetailDTO`() {
-        val fakeBooks = listOf(buildNewBook())
+        val fakeBooks = listOf(buildBook())
         val fakePageBooks = PageImpl(fakeBooks, PageRequest.of(0, 10), fakeBooks.size.toLong())
 
         every { bookRepository.findAllByNameContainsIgnoreCase(any(), any()) } returns fakePageBooks

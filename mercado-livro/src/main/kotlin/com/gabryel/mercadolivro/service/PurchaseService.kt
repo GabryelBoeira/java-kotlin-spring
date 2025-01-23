@@ -11,7 +11,6 @@ import com.gabryel.mercadolivro.mapper.PurchaseMapper
 import com.gabryel.mercadolivro.model.PurchaseModel
 import com.gabryel.mercadolivro.repository.PurchaseRepository
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
