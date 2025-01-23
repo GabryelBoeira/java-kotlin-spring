@@ -2,10 +2,10 @@ package com.gabryel.mercadolivro.service
 
 import com.gabryel.mercadolivro.dto.customer.CustomerUpdateDTO
 import com.gabryel.mercadolivro.enums.CustomerStatus
-import com.gabryel.mercadolivro.enums.Role
 import com.gabryel.mercadolivro.exception.NotFoundException
 import com.gabryel.mercadolivro.extension.toCustomerDetailDTO
-import com.gabryel.mercadolivro.model.CustomerModel
+import com.gabryel.mercadolivro.helper.buildCustomer
+import com.gabryel.mercadolivro.helper.buildCustomerList
 import com.gabryel.mercadolivro.repository.CustomerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -185,7 +185,6 @@ class CustomerServiceTest {
         verify(exactly = 1) { customerRepository.save(expectedCustomer) }
     }
 
-
     @Test
     fun `should throw not found exception when delete customer`() {
         val id = Random().nextInt().toLong()
@@ -200,50 +199,5 @@ class CustomerServiceTest {
         verify(exactly = 1) { customerRepository.findById(id) }
         verify(exactly = 0) { customerRepository.save(any()) }
     }
-
-    /**
-     * Builds a list of fake customer models for testing purposes.
-     *
-     * @return a list of 5 [CustomerModel] instances with unique IDs and emails.
-     */
-    private fun buildCustomerList(): List<CustomerModel> {
-        return buildList {
-            for (i in 1..5) {
-                add(
-                    CustomerModel(
-                        id = i.toLong(),
-                        name = "customer name $i",
-                        email = "$i${UUID.randomUUID()}@email.com",
-                        status = CustomerStatus.ACTIVE,
-                        password = "password$i",
-                        roles = setOf(Role.CUSTOMER)
-                    )
-                )
-            }
-        }
-    }
-
-    /**
-     * Builds a fake customer model for testing purposes.
-     *
-     * @property id the customer's ID. If null, a new UUID will be generated.
-     * @property name the customer's name. Defaults to "customer name".
-     * @property email the customer's email. Defaults to a random UUID followed by "@email.com".
-     * @property password the customer's password. Defaults to "password".
-     * @return a new [CustomerModel] instance with the given properties.
-     */
-    private fun buildCustomer(
-        id: Long? = null,
-        name: String = "customer name",
-        email: String = "${UUID.randomUUID()}@email.com",
-        password: String = "password"
-    ) = CustomerModel(
-        id = id,
-        name = name,
-        email = email,
-        status = CustomerStatus.ACTIVE,
-        password = password,
-        roles = setOf(Role.CUSTOMER)
-    )
-
+    
 }

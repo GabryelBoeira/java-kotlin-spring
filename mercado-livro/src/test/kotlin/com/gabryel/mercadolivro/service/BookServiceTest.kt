@@ -1,9 +1,6 @@
 package com.gabryel.mercadolivro.service
 
-import com.gabryel.mercadolivro.enums.CustomerStatus
-import com.gabryel.mercadolivro.enums.Role
-import com.gabryel.mercadolivro.model.BookModel
-import com.gabryel.mercadolivro.model.CustomerModel
+import com.gabryel.mercadolivro.helper.buildNewBook
 import com.gabryel.mercadolivro.repository.BookRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -15,8 +12,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import java.math.BigDecimal
-import java.util.*
 import kotlin.test.assertNotNull
 
 @ExtendWith(MockKExtension::class)
@@ -24,9 +19,6 @@ class BookServiceTest {
 
     @MockK
     private lateinit var bookRepository: BookRepository
-
-    @MockK
-    private lateinit var customerService: CustomerService
 
     @InjectMockKs
     @SpyK
@@ -59,32 +51,5 @@ class BookServiceTest {
         verify(exactly = 0) { bookRepository.findAll(any()) }
         verify(exactly = 1) { bookRepository.findAllByNameContainsIgnoreCase(any(), any()) }
     }
-
-
-    private fun buildNewBook(
-        id: Long? = null,
-        name: String = "book name",
-        price: BigDecimal = BigDecimal.ZERO,
-        customerId: Long? = null
-    ) = BookModel(
-        id = id,
-        name = name,
-        price = price,
-        customer = buildCustomer(id = customerId?: Random().nextInt().toLong())
-    )
-
-    private fun buildCustomer(
-        id: Long,
-        name: String = "customer name",
-        email: String = "${UUID.randomUUID()}@email.com",
-        password: String = "password"
-    ) = CustomerModel(
-        id = id,
-        name = name,
-        email = email,
-        status = CustomerStatus.ACTIVE,
-        password = password,
-        roles = setOf(Role.CUSTOMER)
-    )
 
 }
