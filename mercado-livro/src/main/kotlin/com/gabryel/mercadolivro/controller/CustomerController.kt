@@ -33,7 +33,6 @@ class CustomerController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getAllCustomers(@PageableDefault(page = 0, size = 10) pageable: Pageable, @RequestParam name: String?): PageResponse<CustomerDetailDTO> {
         return customerService.getAll(pageable, name)
     }
